@@ -1,50 +1,71 @@
-# Welcome to your Expo app 👋
+# Image Reactions App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A simple React Native app with a backend service that lets users react to images (e.g., ❤️, 🔥, 👏, 🤩). Reactions are stored and fetched via a REST API, and the frontend uses React Query for data fetching, caching, and optimistic updates.
 
-## Get started
+## Prerequisites
 
-1. Install dependencies
+- Node.js v16+
+- npm or yarn
+- Expo CLI installed globally (if using Expo)
+
+## Installation
+
+1. **Clone the repository**
 
    ```bash
+   git clone https://github.com/your-username/ImgReaction.git
+   cd ImgReaction
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   # using npm
    npm install
+
+   # or using yarn
+   yarn install
    ```
 
-2. Start the app
+## Configuration
 
-   ```bash
-   npx expo start
-   ```
+- The frontend expects the backend API to run at `http://localhost:3000`. If your backend runs elsewhere, update the `baseURL` in `src/api/reactions.ts`.
 
-In the output, you'll find options to open the app in a
+## Running the Project
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 1. Start the backend via Docker
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+The docker image has not been included for security reasons.
 
-## Get a fresh project
+This will launch the API on `http://localhost:3000`.
 
-When you're ready, run:
+### 2. Start the React Native app
 
 ```bash
-npm run reset-project
+# from the project root
+yarn start
+# or
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Use the Expo Go app on your phone or an emulator to load the project.
 
-## Learn more
+## Directory Structure
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+├── server/             # Backend API (Express or similar)
+├── src/                # React Native frontend
+│   ├── api/            # Axios API client for reactions
+│   ├── components/     # UI components (AuthPanel, ImageCard)
+│   ├── hooks/          # React Query hooks (useReactions)
+│   └── constants/      # Static data (image list)
+└── README.md           # This file
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Key Features
 
-## Join the community
+- **Optimistic UI**: Immediate feedback when adding/removing reactions
+- **React Query**: Caching, background refetching, and mutation handling
+- **Modular API client**: Centralized axios setup and type-safe helpers
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
