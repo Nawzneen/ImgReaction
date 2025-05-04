@@ -1,6 +1,6 @@
 import axios from "axios";
 export const api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "http://localhost:3000",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -13,11 +13,22 @@ export interface ReactionsResponseType {
 
 // GET
 export function getReactions(imageId: string, userId?: string) {
-  return api.get<ReactionsResponseType>(`/reactions/${imageId}`, {
-    headers: userId ? { userid: userId } : undefined,
-  });
+  return api
+    .get<Record<ReactionType, { count: number }>>(`/reactions/${imageId}`, {
+      headers: userId ? { userid: userId } : undefined,
+    })
+    .then((res) => {
+      const raw = res.data;
+      const counts = (Object.keys(raw) as ReactionType[]).reduce((acc, key) => {
+        acc[key] = raw[key].count;
+        return acc;
+      }, {} as Record<ReactionType, number>);
+      return {
+        counts,
+        yourReaction: null as ReactionType | null,
+      };
+    });
 }
-
 // POST
 export function addReaction(
   imageId: string,
