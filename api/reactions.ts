@@ -8,24 +8,35 @@ export type ReactionType = "LOVE" | "ADMIRE" | "FIRE" | "CLAP";
 
 export interface ReactionsResponseType {
   counts: Record<ReactionType, number>;
-  yourReaction: ReactionType | null;
+  userReaction: ReactionType | null;
 }
 
 // GET
 export function getReactions(imageId: string, userId?: string) {
   return api
-    .get<Record<ReactionType, { count: number }>>(`/reactions/${imageId}`, {
-      headers: userId ? { userid: userId } : undefined,
-    })
+    .get<Record<ReactionType, { count: number; hasReacted?: boolean }>>(
+      `/reactions/${imageId}`,
+      {
+        headers: userId ? { userid: userId } : undefined,
+      }
+    )
     .then((res) => {
       const raw = res.data;
       const counts = (Object.keys(raw) as ReactionType[]).reduce((acc, key) => {
         acc[key] = raw[key].count;
         return acc;
       }, {} as Record<ReactionType, number>);
+
+      let userReaction: ReactionType | null = null;
+      if (userId) {
+        userReaction =
+          (Object.keys(raw) as ReactionType[]).find((r) => raw[r].hasReacted) ||
+          null;
+      }
+
       return {
         counts,
-        yourReaction: null as ReactionType | null,
+        userReaction,
       };
     });
 }
