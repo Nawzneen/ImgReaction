@@ -29,7 +29,7 @@ A simple React Native app with a backend service that lets users react to images
 
 ## Configuration
 
-- The frontend expects the backend API to run at `http://localhost:3000`. If your backend runs elsewhere, update the `baseURL` in `src/api/reactions.ts`.
+- The frontend expects the backend API to run at `http://localhost:3000`. you can update the `baseURL` in `api/reactions.ts`.
 
 ## Running the Project
 
