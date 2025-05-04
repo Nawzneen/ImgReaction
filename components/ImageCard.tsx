@@ -9,6 +9,7 @@ type ImageType = {
 interface ImageCardPropsType {
   image: ImageType;
   userId?: string;
+  onRequireAuth: () => void;
 }
 const ALL_REACTIONS: ReactionType[] = ["LOVE", "ADMIRE", "FIRE", "CLAP"];
 const reactionEmojiMap: Record<ReactionType, string> = {
@@ -18,7 +19,11 @@ const reactionEmojiMap: Record<ReactionType, string> = {
   CLAP: "👏",
 };
 
-export function ImageCard({ image, userId }: ImageCardPropsType) {
+export function ImageCard({
+  image,
+  userId,
+  onRequireAuth,
+}: ImageCardPropsType) {
   const { data, isLoading, error, addReaction, removeReaction } = useReactions(
     image.id,
     userId
@@ -38,11 +43,13 @@ export function ImageCard({ image, userId }: ImageCardPropsType) {
               <Pressable
                 key={r}
                 onPress={() => {
-                  if (disabled) return;
+                  if (disabled) {
+                    onRequireAuth();
+                    return;
+                  }
                   if (selected) removeReaction(r);
                   else addReaction(r);
                 }}
-                disabled={disabled}
                 className="cursor-pointer r"
               >
                 <Text
