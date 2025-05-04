@@ -13,7 +13,7 @@ A simple React Native app with a backend service that lets users react to images
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/ImgReaction.git
+   git clone https://github.com/nawzneen/ImgReaction.git
    cd ImgReaction
    ```
 
