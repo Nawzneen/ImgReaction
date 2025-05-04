@@ -25,13 +25,11 @@ export function useReactions(imageId: string, userId?: string) {
   >({
     mutationFn: (reaction) => addReaction(imageId, reaction, userId!),
     onMutate: async (reaction) => {
-      console.log("add reaction clicked on mutate", imageId, reaction, userId);
       await queryClient.cancelQueries({ queryKey });
       const prev = queryClient.getQueryData<ReactionsResponseType>(queryKey);
 
       // 1) delete the any possible old reaction before update
       if (prev?.userReaction) {
-        console.log("removing old reaction", prev.userReaction);
         await removeReaction(imageId, prev.userReaction, userId!);
       }
       // 2) set new reaction
@@ -53,7 +51,6 @@ export function useReactions(imageId: string, userId?: string) {
       }
     },
     onSettled: () => {
-      console.log("💡 onSettled – invalidating");
       queryClient.invalidateQueries({ queryKey }); //refresh after each POST
     },
   });
